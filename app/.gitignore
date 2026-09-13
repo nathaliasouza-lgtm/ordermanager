@@ -1,2 +1,12 @@
-# dotenv environment variable
-*.env
+# dotenv environment variable files
+.env
+.env.*
+!.env.example
+
+
+#node modules
+node_modules/
+jspm_packages/
+
+#optional npm cache dir
+.npm

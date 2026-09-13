@@ -1,0 +1,19 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Order management application",
+  "homepage": "https://github.com/nathaliasouza-lgtm/ordermanager#readme",
+  "bugs": {
+    "url": "https://github.com/nathaliasouza-lgtm/ordermanager/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathaliasouza-lgtm/ordermanager.git"
+  },
+  "license": "MIT",
+  "author": "Nathalia Souza",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+  }
+}

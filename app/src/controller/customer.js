@@ -21,15 +21,13 @@ exports.list = async (req, res) => {
         }
 
         const customers = await Customer.findAll({where: whereClause});
-        return res.status(201).json({
-            message: 'Sending all customers!', 
-            customers: customers
-        })
+
+        //return res.status(201).json({ message: 'Sending all customers!', customers: customers});
+        res.render('customers', {customers});
 
     }catch(err){
         return res.status(500).json({error: err.message});
     };
-
 }
 
 exports.create = async (req, res) => {
@@ -42,13 +40,15 @@ exports.create = async (req, res) => {
         const isRegistered = customer !== null ? true : false
 
         if (!isRegistered){
-            const createCustomer = await Customer.create({name, cpf, email, phone, zipcode, address, residence_number, neighborhood, city, state, uf});
+            await Customer.create({name, cpf, email, phone, zipcode, address, residence_number, neighborhood, city, state, uf});
 
-            return res.status(201).json({
+            return res.redirect('/customer');
+
+            /*return res.status(201).json({
                 message: 'Customer is successfully created!',
                 customer: createCustomer.id,
                 created_at: createCustomer.created_at
-            });
+            });*/
         }else{
            return res.status(400).json({error: 'Oops! This customer is already created!'});
         }

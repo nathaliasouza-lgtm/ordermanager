@@ -24,8 +24,8 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina:
 ### 1. Clonar o repositório
 
 ```bash
-git clone <URL_DO_SEU_REPOSITORIO>
-cd <NOME_DA_PASTA_DO_PROJETO>
+git clone https://github.com/nathaliasouza-lgtm/ordermanager.git
+cd app
 ```
 
 ### 2. Instalar as dependências

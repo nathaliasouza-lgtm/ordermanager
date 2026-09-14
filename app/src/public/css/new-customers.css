@@ -80,8 +80,9 @@
 .btn-secondary {
   color: #64748b;
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-family: 'Lato';
+  font-weight: bold;
   padding: 8px 16px;
   border-radius: 6px;
   transition: background-color 0.2s;
@@ -90,4 +91,6 @@
 .btn-secondary:hover {
   background-color: #e2e8f0;
   color: #1e293b;
+  font-family: 'Lato';
+  font-weight: bold;
 }

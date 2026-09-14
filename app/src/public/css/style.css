@@ -14,6 +14,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 30px;
+}
+
+.main-header{
+  width: 100vw;
+  background-color: red;
+}
+.main-header h1{
+  text-align: right;
+  margin: 0%;
 }
 
 .header-container {
@@ -25,7 +35,7 @@ body {
   margin-bottom: 24px;
 }
 
-.header-container h1 {
+.header-container h2 {
   margin-bottom: 0; /* Remove a margem inferior para alinhar com o botão */
 }
 

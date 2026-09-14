@@ -13,9 +13,10 @@ class Customer extends Model{
 Customer.init(
 {
     id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false
 
     },
     name: {

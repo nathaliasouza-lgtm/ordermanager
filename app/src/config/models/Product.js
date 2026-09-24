@@ -12,7 +12,7 @@ class Product extends Model{
     }
 }
 
-Customer.init(
+Product.init(
 {
     id:{
         type: DataTypes.UUID,
@@ -56,4 +56,4 @@ Customer.init(
     }
 );
 
-module.exports = Customer;
+module.exports = Product;

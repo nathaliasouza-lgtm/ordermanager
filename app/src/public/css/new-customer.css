@@ -1,3 +1,6 @@
+*{
+  font-family: 'Lato';
+}
 /* Container e Card do Formulário */
 .form-container {
   width: 100%;

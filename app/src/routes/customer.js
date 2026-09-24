@@ -4,7 +4,7 @@ const customer = require('../controller/customer');
 
 router.get('/', customer.list);
 router.get('/new', async (req, res) => {
-  return res.render('new-customers');
+  return res.render('customers/new-customer');
 });
 
 router.post('/', customer.create);

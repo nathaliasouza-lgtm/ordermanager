@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const { connect } = require('./config/db');
 const customer = require('./routes/customer');
+const product = require('./routes/product')
 
 //server information
 const port = process.env.PORT
@@ -18,6 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use('/customer', customer);
+app.use('/product', product);
 
 app.get('/', (req, res)=>{
     res.send('Hello, World!')

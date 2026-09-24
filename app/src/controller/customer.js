@@ -23,7 +23,7 @@ exports.list = async (req, res) => {
         const customers = await Customer.findAll({where: whereClause});
 
         //return res.status(201).json({ message: 'Sending all customers!', customers: customers});
-        res.render('customers', {customers});
+        res.render('customers/customer', {customers});
 
     }catch(err){
         return res.status(500).json({error: err.message});

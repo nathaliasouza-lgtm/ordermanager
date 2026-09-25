@@ -37,13 +37,13 @@ Product.init(
     },
     activated:{
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
-    activated_at:{
+    activation_date:{
         type: DataTypes.DATE,
         allowNull: true
     },
-    deactivated_at:{
+    deactivation_date:{
         type: DataTypes.DATE,
         allowNull: true
     }

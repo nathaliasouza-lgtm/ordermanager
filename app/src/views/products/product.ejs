@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Produtos</title>
+  <!-- O caminho busca direto a partir do interior da pasta public/ -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+    <body>
+        <div class="main_header">
+            <h1>Order Manager</h1>
+        </div>
+        <div class="header-container">
+            <h2>Produtos Cadastrados</h2>
+            <a href="/product/new" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Adicionar produto
+            </a>
+        </div>
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input 
+                    type="text" 
+                    id="input-busca" 
+                    placeholder="Buscar produtos por sku, descrição..."
+                    autocomplete="off"
+                >
+            </div>
+        </div>
+            <table class="t-registros">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Descrição</th>
+                        <th>Preço Unitário</th>
+                        <th>Quantidade em Estoque</th>
+                        <th>Produto ativo</th>
+                        <th>Data de Ativação</th>
+                        <th>Data de Inativação</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-data">
+                <% products.forEach(product => { %>
+                    <tr>
+                        <td><%= product.sku %></td>
+                        <td><%= product.description %></td>
+                        <td><%= product.price %></td>
+                        <td><%= product.storage_amt %></td>
+                        <td><%= product.activated %></td>
+                        <td><%= product.activation_date %></td>
+                        <td><%= product.deactivated_at %></td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        <script src="/../js/main.js"></script>
+    </body>
+</html>

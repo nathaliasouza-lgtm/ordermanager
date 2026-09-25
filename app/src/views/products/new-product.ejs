@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Produtos</title>
+  <!-- O caminho busca direto a partir do interior da pasta public/ -->
+  <link rel="stylesheet" href="../css/form-style.css">
+</head>
+<body>
+    <div class="form-container">
+        <form action="/product" method="POST" class="form-card">
+            <div class="form-group">
+                <label for="sku">SKU</label>
+                <input type="text" id="sku" name="sku" required placeholder="Ex: TSH-NKE-NVY-M (Category-Brand-Color-Size)">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" required placeholder="Navy Blue Nike T-Shirt M">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" id="price" name="price" required placeholder="U$72.88">
+            </div>
+            <div class="form-group">
+                <label for="storage_amt">Storage Amount</label>
+                <input type="number" id="storage_amt" name="storage_amt">
+            </div>
+            <div class="form-group">
+                <span>
+                    <input type="checkbox" id="activated" name="activated" value="true">
+                    <label for="activated">Activate Product</label>
+                </span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="add-product">Add Product</button>
+                <a href="/product" class="btn-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+  <script src="/../js/forms.js"></script>
+</body>
+</html>

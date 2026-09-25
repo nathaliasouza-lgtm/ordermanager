@@ -128,7 +128,7 @@ body {
 }
 
 /* Estilização da Tabela */
-.tabela-clientes {
+.t-registros {
   width: 70%;
   border-collapse: collapse; /* Garante que os cantos e linhas se unam perfeitamente */
   text-align: left;
@@ -136,12 +136,12 @@ body {
 }
 
 /* Cabeçalho com grid bem definido */
-.tabela-clientes thead {
+.t-registros thead {
   background-color: #f1f5f9;
   border-bottom: 2px solid #cbd5e1;
 }
 
-.tabela-clientes th {
+.t-registros th {
   padding: 14px 16px;
   font-weight: 600;
   color: #334155;
@@ -152,12 +152,12 @@ body {
   border-right: 1px solid #cbd5e1;
 }
 
-.tabela-clientes th:last-child {
+.t-registros th:last-child {
   border-right: none;
 }
 
 /* Corpo da tabela: linhas alternadas e grid de colunas */
-.tabela-clientes td {
+.t-registros td {
   padding: 12px 16px;
   color: #475569;
   /* Grid entre linhas e colunas */
@@ -165,17 +165,17 @@ body {
   border-right: 1px solid #e2e8f0;
 }
 
-.tabela-clientes td:last-child {
+.t-registros td:last-child {
   border-right: none;
 }
 
 /* Linha alternada (zebra striping) para facilitar a leitura */
-.tabela-clientes tbody tr:nth-child(even) {
+.t-registros tbody tr:nth-child(even) {
   background-color: #f8fafc;
 }
 
 /* Efeito de destaque na linha ao passar o mouse */
-.tabela-clientes tbody tr:hover {
+.t-registros tbody tr:hover {
   background-color: #f1f5f9;
   transition: background-color 0.15s ease-in-out;
 }

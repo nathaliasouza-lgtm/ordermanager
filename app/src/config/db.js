@@ -14,7 +14,7 @@ const database = process.env.DATABASE;
 const sequelize = new Sequelize(database, user, password, {
     host : host,
     dialect: 'mysql',
-    timezone: '-03:00'
+    timezone: '-03:00',
 });
 
 async function connect(){

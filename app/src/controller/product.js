@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
 
             return res.redirect('/product');
         }else{
-           return res.status(400).json({error: 'Oops! This customer is already created!'});
+           return res.status(400).json({error: 'Oops! This product is already created!'});
         }
 
     }catch(err){

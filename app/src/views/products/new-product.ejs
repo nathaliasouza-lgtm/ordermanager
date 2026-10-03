@@ -7,31 +7,44 @@
   <link rel="stylesheet" href="../css/form-style.css">
 </head>
 <body>
+    <div class="main_header">
+        <h1>Order Manager</h1>
+    </div>
+
     <div class="form-container">
-        <form action="/product" method="POST" class="form-card">
+        <div class="header-container">
+            <h2>Cadastrar Produtos</h2>
+        </div>
+        <form action="/product" method="POST" class="form-card" id="new-prod">
             <div class="form-group">
-                <label for="sku">SKU</label>
-                <input type="text" id="sku" name="sku" required placeholder="Ex: TSH-NKE-NVY-M (Category-Brand-Color-Size)">
+                <label for="sku" >SKU*</label>
+                <input type="text" id="sku" name="sku" required placeholder="Ex: TSH-NKE-NVY-M (Category-Brand-Color-Size)" required>
             </div>
             <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" id="description" name="description" required placeholder="Navy Blue Nike T-Shirt M">
+                <label for="description">Description*</label>
+                <input type="text" id="description" name="description" required placeholder="Navy Blue Nike T-Shirt M" required>
             </div>
             <div class="form-group">
-                <label for="price">Price</label>
-                <input type="text" id="price" name="price" required placeholder="U$72.88">
+                <label for="price">Price*</label>
+                <input type="text" id="price" name="price" required placeholder="U$72.88" required>
+                <span id="priceErr" class="errMessage" hidden></span>
             </div>
             <div class="form-group">
                 <label for="storage_amt">Storage Amount</label>
-                <input type="number" id="storage_amt" name="storage_amt">
+                <input type="number" id="storage_amt" name="storage_amt" min="0" required>
+            </div>
+            <div class="form-group">
+                <div id="cb_field">
+                    <label for="activated">Activate Product</label>
+                    <input type="checkbox" id="activated" name="activated">
+                </div>
             </div>
             <div class="form-group">
                 <span>
-                    <input type="checkbox" id="activated" name="activated" value="true">
-                    <label for="activated">Activate Product</label>
+                    <label for="activation_date" hidden>Activation Date</label>
+                    <input type="text" id="activation_date" name="activation_date" hidden readonly>
                 </span>
             </div>
-
             <div class="form-actions">
                 <button type="submit" class="btn-primary" id="add-product">Add Product</button>
                 <a href="/product" class="btn-secondary">Back</a>

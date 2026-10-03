@@ -15,6 +15,13 @@ const sequelize = new Sequelize(database, user, password, {
     host : host,
     dialect: 'mysql',
     timezone: '-03:00',
+
+    //Removes date formatting
+    dialectOptions:{
+        dateStrings: true, //mantém a data com o formato string
+        typeCast: true //remove a formatação
+    }
+
 });
 
 async function connect(){

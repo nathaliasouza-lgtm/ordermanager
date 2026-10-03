@@ -2,14 +2,7 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../db').sequelize;
 
 class Product extends Model{
-    //Checks if the price is negative
-    async checkPrice(price) {
-        
-    }
-    //Check if the product amount is negative
-    async checkStorage(amount){
 
-    }
 }
 
 Product.init(
@@ -41,7 +34,7 @@ Product.init(
     },
     activation_date:{
         type: DataTypes.DATE,
-        allowNull: true
+        allowNull: true,
     },
     deactivation_date:{
         type: DataTypes.DATE,

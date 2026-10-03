@@ -1,5 +1,16 @@
 *{
   font-family: 'Lato';
+  margin: auto;
+}
+
+h1{
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+h2{
+  text-align: center;
 }
 /* Container e Card do Formulário */
 .form-container {
@@ -7,8 +18,15 @@
   max-width: 600px;
 }
 
+.errMessage{
+  text-align: left;
+  color: rgb(128, 10, 10);
+  margin: 0;
+}
+
 .form-card {
   background: #ffffff;
+  width: 100%;
   padding: 32px;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
@@ -20,18 +38,23 @@
 
 /* Campos de Entrada */
 .form-group {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 .form-group label {
+
   font-size: 0.875rem;
   font-weight: 600;
   color: #334155;
+  margin: 0;
+  text-align: left;
 }
 
 .form-group input {
+  width: 100%;
   padding: 10px 14px;
   font-size: 0.95rem;
   border: 1px solid #cbd5e1;
@@ -45,6 +68,15 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
+#cb_field{
+  width: 100%;
+}
+#cb_field input{
+  width: auto;
+  margin: 10px 0px 0px 10px;
+  padding: 0;
+  padding-left: 30px;
+}
 .form-actions {
   display: flex;
   justify-content: flex-end;

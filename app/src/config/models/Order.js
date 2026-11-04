@@ -23,21 +23,24 @@ Order.init(
         primaryKey: true,
         allowNull: false
     },
-    number: {
+    order_number: {
         type: DataTypes.STRING(40),
         allowNull: false
     },
     payment_date:{
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
+        comment:'The moment the order is completed and payment is confirmed.'
     },
     handling_deadline:{
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
+        comment:"Deadline to prepare the products to be sent. Normally, 03 days after payment is confirmed"
     },
     delivery_deadline:{
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
+        comment:'Deadline to the order arrive to customer\'s address after the handling deadline.'
     },
     discount_percentage:{
         type: DataTypes.DECIMAL,
@@ -53,14 +56,15 @@ Order.init(
     },
     payment_value:{
         type: DataTypes.DECIMAL,
-        allowNull: false
+        allowNull: false,
+        comment:"Total payment after discount (when applicable)"
     },
     payment_method:{
         type: DataTypes.STRING(60),
         allowNull: false,
         comment:"Credit Card, Debit Card, Bank Transfer"
     },
-    order_status:{
+    status:{
         type: DataTypes.STRING(40),
         allowNull: false,
         comment: "NEW, CANCELLED, SHIPPING, HANDLING, DELIVERED, PAYMENT PENDING, REFUNDED, RETURNED, EXPIRED, FAILED"

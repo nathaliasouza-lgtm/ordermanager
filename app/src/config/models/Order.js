@@ -2,7 +2,17 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../db').sequelize;
 
 class Order extends Model{
-
+    // creates a relationship one-to-many with OrderItem and one to one association with Customer
+    static associate(models){
+        this.hasMany(models.OrderItem,{
+            foreignKey: 'order_number',
+            as: 'item'
+        });
+        this.belongsTo(models.Customer, {
+            foreignKey: 'customer_id',
+            as: 'customer'
+        });
+    }
 }
 
 Order.init(

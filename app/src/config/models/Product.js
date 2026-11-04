@@ -2,6 +2,14 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../db').sequelize;
 
 class Product extends Model{
+    // creates a relationship with OrderItem.
+    static associate(models){
+        this.hasMany(models.OrderItem, {
+            foreignKey: 'product_sku',
+            sourceKey: 'sku',
+            as: 'orderItems'
+        });
+    }
 
 }
 

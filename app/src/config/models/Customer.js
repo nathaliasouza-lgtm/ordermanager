@@ -8,6 +8,14 @@ class Customer extends Model{
         return await validCPF;
         
     }
+
+    // creates a relationship one-to-many with Orders.
+    static associate(models){
+        this.hasMany(models.Order, {
+            foreignKey: 'customer_id',
+            as: 'orders'
+        });
+    }
 }
 
 Customer.init(

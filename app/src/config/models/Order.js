@@ -56,7 +56,7 @@ Order.init(
     },
     payment_value:{
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         comment:"Total payment after discount (when applicable)"
     },
     payment_method:{

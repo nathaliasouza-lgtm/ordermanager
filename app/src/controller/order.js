@@ -14,7 +14,7 @@ exports.list = async (req, res) => {
         }
 
         const order = await Order.findAll({where: whereClause});
-        res.render('order/order', {order});
+        res.render('orders/order', {order});
 
     }catch(err){
         return res.status(500).json({error: err.message});
@@ -32,10 +32,7 @@ exports.create = async (req, res) => {
         if (!isRegistered){
             await Order.create({order_number, payment_date, handling_deadline, delivery_deadline, discount_percentage, shipping_fee, discount_value, payment_value, payment_method, status});
 
-            return res.redirect('/order').status(201).json({
-                message: 'Order is successfully created!',
-                created_at: Date.now()
-            });
+            return res.redirect('/order');
         }else{
            return res.status(400).json({error: 'Oops! This order is already created!'});
         }

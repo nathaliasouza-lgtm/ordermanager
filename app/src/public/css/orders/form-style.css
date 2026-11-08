@@ -24,6 +24,20 @@ h2{
   margin: 0;
 }
 
+.search-group{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.search-group input{
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border-radius: 16px;
+
+}
 .form-card {
   background: #ffffff;
   width: 100%;
@@ -64,6 +78,21 @@ h2{
 .form-group input:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.btn-search{
+    width: 8%;
+    background: none;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+
+}
+
+#Layer_1{
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 #cb_field{

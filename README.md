@@ -91,3 +91,7 @@ http://localhost:3000/customer
 | `GET` | `/product` | Renderiza a tabela com a listagem de produtos. |
 | `GET` | `/product/new` | Exibe o formulário para cadastro de um novo produto. |
 | `POST` | `/product` | Processa a criação e validação do produto no banco de dados. |
+| `GET` | `/order` | Renderiza a tabela com a listagem de pedidos. |
+| `GET` | `/order/new` | Exibe o formulário para cadastro de um novo pedido. |
+| `GET` | `/order/new/customers` | Lista clientes para seleção no formulário de cadastro do pedido. |
+| `POST` | `/order` | Processa a criação e validação do pedido no banco de dados. |

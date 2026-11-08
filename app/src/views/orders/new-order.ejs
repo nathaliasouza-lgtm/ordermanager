@@ -4,86 +4,93 @@
   <meta charset="UTF-8">
   <title>Order Manager | New Order </title>
   <!-- O caminho busca direto a partir do interior da pasta public/ -->
-  <link rel="stylesheet" href="../css/form-style.css">
+  <link rel="stylesheet" href="../css/orders/form-style.css">
 </head>
 <body>
-<div class="form-container">
-    <form action="/order" method="POST" class="form-card">
-  <div class="form-group">
-    <label for="order_number">Order Number</label>
-    <input type="text" id="order_number" name="order_number" required placeholder="Ex: CSTMR-001">
-  </div>
+    <h1>Order Manager</h1>
+    <div class="form-container">
+        <h2>New Order Form</h2>
+        <form action="/order" method="POST" class="form-card">
+    <div class="form-group">
+        <label for="order_number">Order Number</label>
+        <input type="text" id="order_number" name="order_number" required placeholder="Ex: CSTMR-001">
+    </div>
 
-  <div class="form-group">
-    <label for="payment_date">Payment Date</label>
-    <input type="date" id="payment_date" name="payment_date" required>
-  </div>
+    <div class="form-group">
+        <label for="payment_date">Payment Date</label>
+        <input type="datetime-local" id="payment_date" name="payment_date" required>
+    </div>
 
-  <div class="form-group">
-    <label for="handling_deadline">Handling Deadline</label>
-    <input type="date" id="handling_deadline" name="handling_deadline" required>
-  </div>
+    <div class="form-group">
+        <label for="handling_deadline">Handling Deadline</label>
+        <input type="text" id="handling_deadline" name="handling_deadline" required>
+    </div>
 
-  <div class="form-group">
-    <label for="delivery_deadline">Delivery Deadline</label>
-    <input type="date" id="delivery_deadline" name="delivery_deadline">
-  </div>
+    <div class="form-group">
+        <label for="delivery_deadline">Delivery Deadline</label>
+        <input type="datetime-local" id="delivery_deadline" name="delivery_deadline">
+    </div>
 
-  <div class="form-group">
-    <label for="discount_percentage">Discount (%)</label>
-    <input type="number" id="discount_percentage" name="discount_percentage">
-  </div>
+    <div class="form-group">
+        <label for="discount_percentage">Discount (%)</label>
+        <input type="text" id="discount_percentage" name="discount_percentage">
+    </div>
 
 
-  <div class="form-group">
-    <label for="discount_value">Discount Value</label>
-    <input type="number" id="discount_value" name="discount_value">
-  </div>
+    <div class="form-group">
+        <label for="discount_value">Discount Value</label>
+        <input type="text" id="discount_value" name="discount_value">
+    </div>
 
-  <div class="form-group">
-    <label for="shipping_fee">Shipping Fee</label>
-    <input type="number" id="shipping_fee" name="shipping_fee">
-  </div>
+    <div class="form-group">
+        <label for="shipping_fee">Shipping Fee</label>
+        <input type="text" id="shipping_fee" name="shipping_fee">
+    </div>
 
-  <div class="form-group">
-    <label for="payment_value">Total</label>
-    <input type="text" id="payment_value" name="payment_value">
-  </div>
+    <div class="form-group">
+        <label for="payment_value">Total</label>
+        <input type="text" id="payment_value" name="payment_value">
+    </div>
 
-  <div class="form-group">
-    <h3>Payment Method</h3>
-    <label for="credit_card">Credit Card</label>
-    <input type="radio" id="credit_card" name="payment_method" value="Credit Card">
-    <label for="debit_card">Debit Card</label>
-    <input type="radio" id="debit_card" name="payment_method" value="Debit Card">
-    <label for="bank_transfer">Bank Transfer</label>
-    <input type="radio" id="bank_transfer" name="payment_method" value="Bank Transfer">
-  </div>
+    <div class="form-group">
+        <h3>Payment Method</h3>
+        <div class="payment-option">
+            <input type="radio" id="credit_card" name="payment_method" value="Credit Card">
+            <label for="credit_card">Credit Card</label>
+        </div>
+        <div class="payment-option">
+            <input type="radio" id="debit_card" name="payment_method" value="Debit Card">
+            <label for="debit_card">Debit Card</label>
+        </div>
+        <div class="payment-option">
+            <input type="radio" id="bank_transfer" name="payment_method" value="Bank Transfer">
+            <label for="bank_transfer">Bank Transfer</label>
+        </div>
+    </div>
 
-  <div class="form-group">
-    <label for="status">Status</label>
-    <select name="status" id="status">
-        <option value="new">NEW</option>
-        <option value="cancelled">CANCELLED</option>
-        <option value="shipping">SHIPPING</option>
-        <option value="handling">HANDLING</option>    
-        <option value="delivered">DELIVERED</option>    
-        <option value="payment_pending">PAYMENT PENDING</option>    
-        <option value="refunded">REFUNDED</option>    
-        <option value="returned">RETURNED</option>    
-        <option value="expired">EXPIRED</option>            
-        <option value="failed">FAILED</option>    
-    </select>
-  </div>
+    <div class="form-group">
+        <label for="status">Status</label>
+        <select name="status" id="status">
+            <option value="new">NEW</option>
+            <option value="cancelled">CANCELLED</option>
+            <option value="shipping">SHIPPING</option>
+            <option value="handling">HANDLING</option>    
+            <option value="delivered">DELIVERED</option>    
+            <option value="payment_pending">PAYMENT PENDING</option>    
+            <option value="refunded">REFUNDED</option>    
+            <option value="returned">RETURNED</option>    
+            <option value="expired">EXPIRED</option>            
+            <option value="failed">FAILED</option>    
+        </select>
+    </div>
 
-  <div class="form-actions">
-    <button type="submit" class="btn-primary">Add Order</button>
-    <a href="/order" class="btn-secondary">Voltar</a>
-  </div>
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">Add Order</button>
+        <a href="/order" class="btn-secondary">Voltar</a>
+    </div>
+    </form>
+    </div>
 
-</form>
-</div>
-
-  <script src="/../js/main.js"></script>
+  <script src="/../js/orders/form.js"></script>
 </body>
 </html>

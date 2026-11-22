@@ -90,7 +90,7 @@
             <p class="customer-name"><%= order.customers.name %></p>
           <% } %>
           <p class="delivery-date">
-            Delivery: <strong><%= new Date(order.delivery_date).toLocaleDateString('pt-BR') %></strong>
+            Delivery: <strong><%= new Date(order.delivery_deadline).toLocaleDateString('pt-BR') %></strong>
           </p>
         </li>
             <% }) %>

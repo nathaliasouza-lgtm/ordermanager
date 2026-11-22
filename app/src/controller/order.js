@@ -1,10 +1,10 @@
-
 require('dotenv').config({ path: '../.env' });
 
 const jwt = require('jsonwebtoken');
 const Order = require('../config/models/Order');
 const Customer = require('../config/models/Customer');
 const { Product, OrderItem } = require('../config/models');
+const { syncOrderInventory } = require('../services/inventoryService');
 
 const { Op } = require('sequelize');
 
@@ -34,12 +34,9 @@ exports.list = async (req, res) => {
     }
 };
 
-
 // CREATE ORDER
-
 exports.create = async (req, res) => {
     let transaction;
-
     try {
         const {
             order_number,
@@ -142,6 +139,10 @@ exports.create = async (req, res) => {
 
         await OrderItem.bulkCreate(orderItems, { transaction });
 
+        // Decreases product storage_amt if status is new, shipping, handling, or delivered
+        // Does not change stock if status is failed, expired, payment pending, refunded, returned, or cancelled
+        await syncOrderInventory(orderItems, null, status, transaction);
+
         await transaction.commit();
 
         return res.redirect('/order');
@@ -158,8 +159,6 @@ exports.create = async (req, res) => {
         });
     }
 };
-
-
 
 // LIST CUSTOMERS
 exports.list_customers = async (req, res) => {
@@ -207,7 +206,6 @@ exports.list_customers = async (req, res) => {
     }
 };
 
-
 // LIST PRODUCTS
 exports.list_products = async (req, res) => {
     try {
@@ -246,4 +244,3 @@ exports.list_products = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
-

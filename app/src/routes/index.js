@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { fn, col, Op, literal } = require('sequelize');
 const { Customer, Product, Order, OrderItem } = require('../config/models');
+const { syncOrderInventory } = require('../services/inventoryService');
 
 router.get('/', async (req, res) => {
   try {
@@ -67,15 +68,20 @@ router.get('/', async (req, res) => {
         limit: 5
       }),
       Order.findAll({
-        attributes: ['customer_id'],
-        where: {
-          customer_id: { [Op.ne]: null },
-          status: { [Op.ne]: 'CANCELLED' }
-        },
-        group: ['customer_id'],
-        having: literal('COUNT(*) > 1'),
-        raw: true
-      })
+          attributes: [
+              'customer_id',
+              [fn('COUNT', col('id')), 'orderCount']
+          ],
+            where: {
+              [Op.and]: [
+                { customer_id: { [Op.ne]: null } },
+                literal("UPPER(status) NOT IN ('cancelled', 'refunded', 'failed', 'expired')")
+              ]
+            },
+            group: ['customer_id'],
+            having: literal('COUNT(id) > 1'),
+            raw: true
+        })
     ]);
 
     const ordersByStatus = {};
@@ -94,7 +100,7 @@ router.get('/', async (req, res) => {
       topProducts,
       repeatCustomersCount: repeatCustomersList.length
     });
-
+    console.log('Repeat customers query result:', repeatCustomersList)
   } catch (error) {
     console.error('Error loading dashboard:', error);
     res.status(500).send(`Server Error: ${error.message}`);
@@ -138,27 +144,47 @@ router.get('/orders/:id/details', async (req, res) => {
 });
 
 // PATCH order status from the modal dropdown
-router.patch('/orders/:id/status', async (req, res) => {
+router.patch('/orders/:id/status', express.json(), async (req, res) => {
+  const t = await Order.sequelize.transaction();
+
   try {
     const orderId = req.params.id;
     const { status } = req.body || {};
+
     if (!status) {
+      await t.rollback();
       return res.status(400).json({ error: 'Status is required' });
     }
 
-    const order = await Order.findOne({ where: { id: orderId } });    
+    const order = await Order.findByPk(orderId, {
+      include: [
+        {
+          model: OrderItem,
+          as: 'items' // Match your Order -> OrderItem association alias
+        }
+      ],
+      transaction: t
+    });
 
     if (!order) {
+      await t.rollback();
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    order.status = status;
-    await order.save();
+    const previousStatus = order.status;
 
+    // Adjusts product stock only if the status transition crosses deducted <-> restored
+    await syncOrderInventory(order.items || [], previousStatus, status, t);
+
+    order.status = status;
+    await order.save({ transaction: t });
+
+    await t.commit();
     res.json({ success: true, status: order.status });
   } catch (error) {
+    await t.rollback();
     console.error('Error updating order status:', error);
-    res.status(500).json({ error: 'Failed to update status' });
+    res.status(400).json({ error: error.message });
   }
 });
 

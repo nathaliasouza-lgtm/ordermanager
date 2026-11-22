@@ -5,8 +5,17 @@
   <title> Order Manager | Orders </title>
   <!-- O caminho busca direto a partir do interior da pasta public/ -->
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/nav.css"> 
 </head>
 <body>
+  <nav>
+    <ul>
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="/order">Orders</a></li>
+      <li><a href="/customer">Customers</a></li>
+      <li><a href="/product">Products</a></li>
+    </ul>
+  </nav>
   <div class="main_header">
       <h1>Order Manager</h1>
   </div>
@@ -34,36 +43,39 @@
       >
     </div>
   </div>
-  <table class="t-registros">
+  
+<table class="t-registros">
     <thead>
-      <tr>
-        <th>Order Number</th>
-        <th>Status</th>
-        <th>Payment Method</th>
-        <th>Payment Date</th>
-        <th>Handling Deadline</th>
-        <th>Delivery Deadline</th>
-        <th>Discount (%)</th>
-        <th>Shipping Fee</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody id="tbody-data">
-      <% order.forEach(record => { %>
         <tr>
-          <td><%= record.order_number %></td>
-          <td><%= record.status %></td>
-          <td><%= record.payment_method %></td>
-          <td><%= record.payment_date %></td>
-          <td><%= record.handling_deadline %></td>
-          <td><%= record.delivery_deadline %></td>
-          <td><%= record.discount_percentage %></td>
-          <td><%= record.shipping_fee %></td>
-          <td><%= record.payment_value %></td>
+            <th>Order Number</th>
+            <th>Status</th>
+            <th>Payment Method</th>
+            <th>Payment Date</th>
+            <th>Handling Deadline</th>
+            <th>Delivery Deadline</th>
+            <th>Discount (%)</th>
+            <th>Shipping Fee</th>
+            <th>Total</th>
         </tr>
-      <% }) %>
+    </thead>
+
+    <tbody id="tbody-data">
+        <% order.forEach(record => { %>
+            <tr>
+                <td><%= record.order_number %></td>
+                <td><%= record.status %></td>
+                <td><%= record.payment_method %></td>
+                <td><%= record.payment_date %></td>
+                <td><%= record.handling_deadline %></td>
+                <td><%= record.delivery_deadline %></td>
+                <td><%= record.discount_percentage %></td>
+                <td><%= record.shipping_fee %></td>
+                <td><%= record.payment_value %></td>
+            </tr>
+        <% }) %>
     </tbody>
-  </table>
+</table>
+
   <script src="/../js/main.js"></script>
 </body>
 </html>

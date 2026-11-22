@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/nav.css">
+</head>
+<body>
+
+    <nav>
+    <ul>
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="/order">Orders</a></li>
+      <li><a href="/customer">Customers</a></li>
+      <li><a href="/product">Products</a></li>
+    </ul>
+  </nav>
+
+  <div class="dashboard-layout">
+    <main>
+        <!-- Orders Section -->
+      <section class="section-orders">
+        <h2>Orders by Status</h2>
+        <% if (typeof ordersByStatus !== 'undefined' && ordersByStatus) { %>
+          <% Object.entries(ordersByStatus).forEach(([status, count]) => { %>
+            <div>
+              <h3><%= status %></h3>
+              <p><%= count %></p>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No order data available.</p>
+        <% } %>
+      </section>
+      <!-- Customers Section -->
+      <section class="section-customers">
+        <h2>Customers</h2>
+        <div>
+          <h3>Total Customers</h3>
+          <p><%= typeof totalCustomers !== 'undefined' ? totalCustomers : 0 %></p>
+        </div>
+      </section>
+
+      <!-- Products Section -->
+      <section class="section-products">
+        <h2>Products</h2>
+        <div>
+          <h3>Active Products</h3>
+          <p><%= typeof activeProducts !== 'undefined' ? activeProducts : 0 %></p>
+        </div>
+        <div>
+          <h3>Products in Storage</h3>
+          <p><%= typeof totalProductsInStorage !== 'undefined' ? totalProductsInStorage : 0 %></p>
+        </div>
+        <div>
+          <h3>Total Storage Value</h3>
+          <p>
+            <%= (typeof totalStorageValue !== 'undefined' ? totalStorageValue : 0)
+                  .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>
+          </p>
+        </div>
+        <div>
+          <h3>Average Cost</h3>
+          <p>
+            <%= (typeof averageStorageCost !== 'undefined' ? averageStorageCost : 0)
+                  .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>
+          </p>
+        </div>
+      </section>
+
+      
+    </main>
+
+    <!-- Right Sidebar Column -->
+    <div class="dashboard-sidebar">
+      <!-- Closest Deliveries -->
+      <aside class="upcoming-orders">
+        <h2>Closest Deliveries</h2>
+        <% if (typeof upcomingOrders !== 'undefined' && upcomingOrders.length > 0) { %>
+          <ul class="delivery-list">
+            <% upcomingOrders.forEach(order => { %>
+              <li class="delivery-item clickable-order" data-order-id="<%= order.id %>" data-order-number="<%= order.order_number %>" role="button" tabindex="0">
+          <div class="delivery-top">
+            <span class="order-id">Order #<%= order.order_number %></span>
+            <span class="order-status" id="sidebar-status-<%= order.id %>"><%= order.status %></span>
+          </div>
+          <% if (order.customers) { %>
+            <p class="customer-name"><%= order.customers.name %></p>
+          <% } %>
+          <p class="delivery-date">
+            Delivery: <strong><%= new Date(order.delivery_date).toLocaleDateString('pt-BR') %></strong>
+          </p>
+        </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="empty-msg">No upcoming deliveries.</p>
+        <% } %>        
+      </aside>
+      <!-- Repeat Customers -->
+      <aside class="repeat-customers-sidebar">
+        <h2>Repeat Customers</h2>
+        <div class="repeat-stat">
+          <p class="repeat-number">
+            <%= typeof repeatCustomersCount !== 'undefined' ? repeatCustomersCount : 0 %>
+          </p>
+          <span class="repeat-label">customers purchased more than once</span>
+        </div>
+      </aside>
+      <!-- Top Sales Products (Stacked under Closest Deliveries) -->
+      <aside class="top-products-sidebar">
+        <h2>Top Sales Products</h2>
+        <% if (typeof topProducts !== 'undefined' && topProducts.length > 0) { %>
+          <ul class="top-products-list">
+            <% topProducts.forEach((item, index) => { %>
+              <% const prod = item.products; %>
+              <li class="top-product-item">
+                <div class="top-product-info">
+                  <span class="product-rank">#<%= index + 1 %></span>
+                  <span class="product-name"><%= prod ? prod.description : 'Unknown Product' %></span>
+                </div>
+                <span class="product-sold"><%= item.get('totalSold') %> sold</span>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="empty-msg">No sales data available.</p>
+        <% } %>
+      </aside>
+    </div>
+  </div>
+  <!-- Order Details Modal -->
+    <dialog id="order-modal" class="order-modal">
+  <div class="modal-content">
+    <header class="modal-header">
+      <h2 id="modal-order-title">Order #</h2>
+      <button type="button" id="close-modal-btn" class="close-btn" aria-label="Close">×</button>
+    </header>
+
+    <div id="modal-loading" class="modal-loading">Loading order details...</div>
+
+    <div id="modal-body" class="modal-body" hidden>
+      <!-- Section 1: Customer Information -->
+      <section class="modal-section">
+        <h3>1. Customer Information</h3>
+        <div class="info-grid">
+          <div><span class="field-label">Name:</span> <span id="cust-name">-</span></div>
+          <div><span class="field-label">CPF:</span> <span id="cust-cpf">-</span></div>
+          <div><span class="field-label">E-mail:</span> <span id="cust-email">-</span></div>
+          <div><span class="field-label">Phone:</span> <span id="cust-phone">-</span></div>
+          <div class="full-span"><span class="field-label">Address:</span> <span id="cust-address">-</span></div>
+          <div><span class="field-label">City / State:</span> <span id="cust-city-state">-</span></div>
+          <div><span class="field-label">Zip Code:</span> <span id="cust-zip">-</span></div>
+        </div>
+      </section>
+
+      <!-- Section 2: Product Information -->
+      <section class="modal-section">
+        <h3>2. Products</h3>
+        <div class="modal-table-wrapper">
+          <table class="modal-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+                <th>Line Total</th>
+              </tr>
+            </thead>
+            <tbody id="modal-products-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+          <!-- Section 3: Order Information & Editable Status -->
+          <section class="modal-section">
+            <h3>3. Order Summary</h3>
+            <div class="order-summary-grid">
+              <div class="status-control-box">
+                <label for="modal-status-select" class="field-label">Order Status</label>
+                <div class="status-actions">
+                  <select id="modal-status-select">
+                    <!-- Adjust options to match your exact database status values -->
+                    <option value="New">New</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                  <button type="button" id="save-status-btn" class="btn-save-status">Save Status</button>
+                </div>
+                <small id="status-feedback" class="status-feedback"></small>
+              </div>
+
+              <div class="totals-box">
+                <div class="total-row"><span>Subtotal:</span> <strong id="order-subtotal">R$ 0,00</strong></div>
+                <div class="total-row"><span>Discount:</span> <strong id="order-discount">R$ 0,00</strong></div>
+                <div class="total-row"><span>Shipping Fee:</span> <strong id="order-shipping">R$ 0,00</strong></div>
+                <div class="total-row grand-total"><span>Total:</span> <strong id="order-total">R$ 0,00</strong></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      const modal = document.getElementById('order-modal');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const modalLoading = document.getElementById('modal-loading');
+      const modalBody = document.getElementById('modal-body');
+      const statusSelect = document.getElementById('modal-status-select');
+      const saveStatusBtn = document.getElementById('save-status-btn');
+      const statusFeedback = document.getElementById('status-feedback');
+
+      let currentOrderId = null;
+
+      const formatBRL = (val) =>
+        Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      async function openOrderModal(orderId, orderNumber) {
+        currentOrderId = orderId;
+        document.getElementById('modal-order-title').textContent = `Order #${orderNumber || orderId}`;
+        statusFeedback.textContent = '';
+        modalLoading.hidden = false;
+        modalBody.hidden = true;
+        modal.showModal();
+
+        try {
+          const res = await fetch(`/orders/${orderId}/details`);
+          if (!res.ok) throw new Error('Failed to load order');
+          const order = await res.json();
+          document.getElementById('modal-order-title').textContent = `Order #${order.order_number}`;
+
+          // 1. Populate Customer Info
+          const cust = order.customers || {};
+          document.getElementById('cust-name').textContent = cust.name || '-';
+          document.getElementById('cust-cpf').textContent = cust.cpf || '-';
+          document.getElementById('cust-email').textContent = cust.email || '-';
+          document.getElementById('cust-phone').textContent = cust.phone || '-';
+          document.getElementById('cust-address').textContent =
+            [cust.address, cust.residence_number, cust.neighborhood].filter(Boolean).join(', ') || '-';
+          document.getElementById('cust-city-state').textContent =
+            [cust.city, cust.state].filter(Boolean).join(' - ') || '-';
+          document.getElementById('cust-zip').textContent = cust.zipcode || '-';
+
+          // 2. Populate Products Table
+          const tbody = document.getElementById('modal-products-tbody');
+          tbody.innerHTML = '';
+          const items = order.items || [];
+
+          if (items.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5">No products found for this order.</td></tr>';
+          } else {
+            items.forEach(item => {
+              const prod = item.products || {};
+              const amount = Number(item.amount ?? 0);
+              const unitPrice = Number(item.unit_price ?? 0);
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${prod.sku || '-'}</td>
+                <td>${prod.description || '-'}</td>
+                <td>${formatBRL(unitPrice)}</td>
+                <td>${amount}</td>
+                <td>${formatBRL(unitPrice * amount)}</td>
+              `;
+              tbody.appendChild(row);
+            });
+          }
+
+          // 3. Populate Order Summary & Status Dropdown
+          const subtotal = Number(order.subtotal ?? 0);
+          const discount = Number(order.discount_value ?? 0);
+          const shipping = Number(order.shipping_fee ?? 0);
+          const total = Number(order.payment_value ?? (subtotal - discount + shipping));
+
+          document.getElementById('order-subtotal').textContent = formatBRL(subtotal);
+          document.getElementById('order-discount').textContent = `- ${formatBRL(discount)}`;
+          document.getElementById('order-shipping').textContent = formatBRL(shipping);
+          document.getElementById('order-total').textContent = formatBRL(total);
+
+          // Ensure current status exists in dropdown options (handles case differences)
+          const matchingOption = Array.from(statusSelect.options).find(
+            opt => opt.value.toLowerCase() === String(order.status || '').toLowerCase()
+          );
+          if (matchingOption) {
+            statusSelect.value = matchingOption.value;
+          } else if (order.status) {
+            const opt = new Option(order.status, order.status, true, true);
+            statusSelect.add(opt);
+          }
+
+          modalLoading.hidden = true;
+          modalBody.hidden = false;
+        } catch (err) {
+          modalLoading.textContent = 'Error loading order details. Please try again.';
+        }
+      }
+
+      // Attach click & keyboard listeners to Closest Deliveries items
+        document.querySelectorAll('.clickable-order').forEach(item => {
+            item.addEventListener('click', () => openOrderModal(item.dataset.orderId));
+            item.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openOrderModal(item.dataset.orderId);
+              }
+            });
+        });
+
+      // Save updated status
+      saveStatusBtn.addEventListener('click', async () => {
+        if (!currentOrderId) return;
+        saveStatusBtn.disabled = true;
+        statusFeedback.textContent = 'Saving...';
+
+        try {
+          const res = await fetch(`/orders/${currentOrderId}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: statusSelect.value })
+          });
+
+          if (!res.ok) throw new Error('Update failed');
+
+          // Update status badge in the sidebar immediately
+          const sidebarBadge = document.getElementById(`sidebar-status-${currentOrderId}`);
+          if (sidebarBadge) sidebarBadge.textContent = statusSelect.value;
+
+          statusFeedback.textContent = 'Status updated!';
+          statusFeedback.style.color = '#059669';
+        } catch (err) {
+          statusFeedback.textContent = 'Failed to update status.';
+          statusFeedback.style.color = '#dc2626';
+        } finally {
+          saveStatusBtn.disabled = false;
+        }
+      });
+
+      // Close modal via button or backdrop click
+      closeModalBtn.addEventListener('click', () => modal.close());
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.close();
+      });
+    </script>
+</body>
+</html>

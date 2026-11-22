@@ -1,0 +1,543 @@
+/* Reset & Base Typography */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+/* Main Dashboard Container */
+main {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+/* Two-Column Dashboard Layout */
+.dashboard-layout {
+  max-width: 1200px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  align-items: start;
+}
+
+main {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar: Upcoming Deliveries */
+.upcoming-orders {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #f59e0b; /* Amber accent */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.upcoming-orders h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.delivery-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.delivery-item {
+  padding: 0.85rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.delivery-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.order-id {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.order-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.customer-name {
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 0.25rem;
+}
+
+.delivery-date {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.delivery-date strong {
+  color: #b45309;
+}
+
+.empty-msg {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* Stack sidebar below main content on tablets/mobile */
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    margin: 1.5rem auto;
+  }
+}
+
+/* Dashboard Sections (Grid Layout) */
+section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* Section Headings span across all grid columns */
+section h2 {
+  grid-column: 1 / -1;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Right Sidebar Container (Stacks Closest Deliveries + Top Sales) */
+.dashboard-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Top Sales Sidebar Card */
+.top-products-sidebar {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #ec4899; /* Pink/Rose accent */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.top-products-sidebar h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.top-products-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.top-product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.top-product-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.product-rank {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #db2777;
+}
+
+.product-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-sold {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background-color: #fce7f3;
+  color: #be185d;
+  white-space: nowrap;
+}
+
+.unit-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* Repeat Customers Sidebar Card */
+.repeat-customers-sidebar {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #06b6d4; /* Cyan accent */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.repeat-customers-sidebar h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.repeat-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+
+.repeat-number {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.repeat-label {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+/* Metric Cards */
+section > div {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+section > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Card Title */
+section > div h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+/* Card Number / Metric */
+section > div p {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Subtle accent border on first section cards */
+section:first-of-type > div {
+  border-top: 4px solid #3b82f6;
+}
+
+/* Subtle accent border on Orders by Status cards */
+section:last-of-type > div {
+  border-top: 4px solid #10b981;
+}
+/* Section-specific card top accent borders */
+.section-customers > div {
+  border-top: 4px solid #3b82f6; /* Blue */
+}
+
+.section-products > div {
+  border-top: 4px solid #8b5cf6; /* Purple */
+}
+
+.section-orders > div {
+  border-top: 4px solid #10b981; /* Emerald */
+}
+
+/* Clickable Sidebar Delivery Items */
+.clickable-order {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.clickable-order:hover {
+  transform: translateY(-2px);
+  border-color: #f59e0b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Native <dialog> Order Modal */
+.order-modal {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  width: min(760px, 92vw);
+  max-height: 88vh;
+  margin: auto;
+  background-color: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.order-modal::backdrop {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.modal-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #ffffff;
+}
+
+.modal-loading {
+  padding: 2.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Reset dashboard grid inside modal sections */
+.modal-section {
+  display: block;
+  margin-bottom: 0;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.15rem;
+}
+
+.modal-section h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+/* Section 1: Customer Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+}
+
+.info-grid .full-span {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Section 2: Products Table */
+.modal-table-wrapper {
+  overflow-x: auto;
+}
+
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.modal-table th,
+.modal-table td {
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+/* Section 3: Order Summary & Status Dropdown */
+.order-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.status-control-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.status-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.status-actions select {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.btn-save-status {
+  padding: 0.5rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-save-status:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-save-status:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-feedback {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.totals-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  background-color: #ffffff;
+  padding: 0.85rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  color: #475569;
+}
+
+.total-row.grand-total {
+  margin-top: 0.35rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid #cbd5e1;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+@media (max-width: 640px) {
+  .info-grid,
+  .order-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 600px) {
+  nav {
+    padding: 1rem;
+  }
+
+  nav ul {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  main {
+    margin: 1.5rem auto;
+  }
+}

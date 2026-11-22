@@ -1,103 +1,249 @@
-require('dotenv').config({path:'../.env'});
+
+require('dotenv').config({ path: '../.env' });
+
 const jwt = require('jsonwebtoken');
 const Order = require('../config/models/Order');
-const Customer = require('../config/models/Customer')
+const Customer = require('../config/models/Customer');
+const { Product, OrderItem } = require('../config/models');
+
 const { Op } = require('sequelize');
 
+const JWT_SECRET = process.env.SECRET_KEY;
 
-const JWT_SECRET = process.env.SECRET_KEY
 
+// LIST ORDERS
 exports.list = async (req, res) => {
-    try{
+    try {
         const { search } = req.query;
         const whereClause = {};
 
-        if (search){
+        if (search) {
             whereClause[Op.or] = [
-                {number: { [Op.like]: `%${search}%` }}
+                { order_number: { [Op.like]: `%${search}%` } }
             ];
         }
 
-        const order = await Order.findAll({where: whereClause});
-        res.render('orders/order', {order});
+        const order = await Order.findAll({
+            where: whereClause
+        });
 
-    }catch(err){
-        return res.status(500).json({error: err.message});
-    };
-}
+        return res.render('orders/order', { order });
+
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+};
+
+
+// CREATE ORDER
 
 exports.create = async (req, res) => {
-    try{
-        // get all information
-        const {order_number, customer_token, payment_date, handling_deadline, delivery_deadline, discount_percentage, shipping_fee, discount_value, payment_value, payment_method, status} = req.body;
+    let transaction;
 
-        const order = await Order.findOne({where: {order_number: order_number}});
-        const isRegistered = order !== null ? true : false
+    try {
+        const {
+            order_number,
+            customer_token,
+            payment_date,
+            handling_deadline,
+            delivery_deadline,
+            discount_percentage,
+            shipping_fee,
+            discount_value,
+            payment_value,
+            payment_method,
+            status
+        } = req.body;
+
+        let products = req.body.products;
+
+        if (products && !Array.isArray(products)) {
+            products = Object.values(products);
+        }
+
+        if (!Array.isArray(products) || products.length === 0) {
+            return res.status(400).send('Select at least one product.');
+        }
+
+        const existingOrder = await Order.findOne({
+            where: { order_number }
+        });
+
+        if (existingOrder) {
+            return res.status(400).json({
+                error: 'Oops! This order is already created!'
+            });
+        }
 
         if (!customer_token) {
             return res.status(400).send('Selecione um cliente válido.');
         }
 
-        // 2. Descriptografa e valida o JWT
         let decoded;
+
         try {
             decoded = jwt.verify(customer_token, JWT_SECRET);
         } catch (err) {
-            console.error('Error:', err.message);
             return res.status(400).send('Invalid or expired token.');
         }
-        const realCustomerId = decoded.customer_id;
 
-        if (!isRegistered){
-            await Order.create({order_number, customer_id: realCustomerId, payment_date, handling_deadline, delivery_deadline, discount_percentage, shipping_fee, discount_value, payment_value, payment_method, status});
+        transaction = await Order.sequelize.transaction();
 
-            return res.redirect('/order');
-        }else{
-           return res.status(400).json({error: 'Oops! This order is already created!'});
+        const order = await Order.create({
+            order_number,
+            customer_id: decoded.customer_id,
+            payment_date,
+            handling_deadline,
+            delivery_deadline,
+            discount_percentage,
+            shipping_fee,
+            discount_value,
+            payment_value,
+            payment_method,
+            status
+        }, { transaction });
+
+        const orderItems = [];
+
+        for (const product of products) {
+            const sku = String(
+                product.product_sku || product.sku || ''
+            ).trim();
+
+            const amount = Number(product.amount);
+
+            if (!sku || !Number.isInteger(amount) || amount <= 0) {
+                throw new Error('Invalid product information.');
+            }
+
+            const productRecord = await Product.findOne({
+                where: { sku },
+                transaction
+            });
+
+            if (!productRecord) {
+                throw new Error(`Product ${sku} was not found.`);
+            }
+
+            const unitPrice = Number(productRecord.price);
+
+            if (!Number.isFinite(unitPrice) || unitPrice < 0) {
+                throw new Error(`Invalid price for product ${sku}.`);
+            }
+
+            orderItems.push({
+                order_id: order.id,
+                product_id: productRecord.id,
+                amount,
+                unit_price: unitPrice,
+                total_price: amount * unitPrice
+            });
         }
 
-    }catch(err){
-        return res.status(500).json({error:`${err.message}`});
-    }
-    
-}
+        await OrderItem.bulkCreate(orderItems, { transaction });
 
+        await transaction.commit();
+
+        return res.redirect('/order');
+
+    } catch (err) {
+        if (transaction && !transaction.finished) {
+            await transaction.rollback();
+        }
+
+        console.error('Error creating order and order items:', err);
+
+        return res.status(500).json({
+            error: err.message
+        });
+    }
+};
+
+
+
+// LIST CUSTOMERS
 exports.list_customers = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const offset = (page - 1) * limit;
         const { searchValue } = req.query;
+
         const whereClause = {};
 
-        if (searchValue){
+        if (searchValue) {
             whereClause[Op.or] = [
-                {name: { [Op.like]: `%${searchValue}%` }}
+                { name: { [Op.like]: `%${searchValue}%` } }
             ];
         }
-        
 
         const { count, rows } = await Customer.findAndCountAll({
             attributes: ['id', 'name', 'cpf'],
             where: whereClause,
-            offset: offset,
-            limit: limit,
-            order: [['name', 'ASC']],
+            offset,
+            limit,
+            order: [['name', 'ASC']]
         });
+
         const customersWithTokens = rows.map(customer => ({
             name: customer.name,
             cpf: customer.cpf,
-            // O ID real vira um JWT assinado e seguro
-            token: jwt.sign({ customer_id: customer.id }, JWT_SECRET, { expiresIn: '1h' })
+            token: jwt.sign(
+                { customer_id: customer.id },
+                JWT_SECRET,
+                { expiresIn: '1h' }
+            )
         }));
-        
-        res.json({
+
+        return res.json({
             data: customersWithTokens,
             currentPage: page,
             totalPages: Math.ceil(count / limit),
             totalItems: count
         });
-    }catch (err) {
-        res.status(500).json({ error: err });
+
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
     }
-}
+};
+
+
+// LIST PRODUCTS
+exports.list_products = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+        const { searchValue } = req.query;
+
+        const whereClause = {
+            activated: true
+        };
+
+        if (searchValue) {
+            whereClause[Op.or] = [
+                { sku: { [Op.like]: `%${searchValue}%` } },
+                { description: { [Op.like]: `%${searchValue}%` } }
+            ];
+        }
+
+        const { count, rows } = await Product.findAndCountAll({
+            attributes: ['sku', 'description', 'storage_amt', 'price'],
+            where: whereClause,
+            offset,
+            limit,
+            order: [['sku', 'ASC']]
+        });
+
+        return res.json({
+            data: rows,
+            currentPage: page,
+            totalPages: Math.ceil(count / limit),
+            totalItems: count
+        });
+
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+};
+

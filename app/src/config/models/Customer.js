@@ -50,7 +50,7 @@ Customer.init(
     address: {
         type: DataTypes.STRING(100),
         allowNull: false
-    },
+    },  
     residence_number: {
         type: DataTypes.STRING(5),
         allowNull: true,

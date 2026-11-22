@@ -7,6 +7,7 @@ router.get('/new', async (req, res) => {
   return res.render('orders/new-order');
 });
 router.get('/new/customers', order.list_customers);
+router.get('/new/products', order.list_products);
 
 router.post('/', order.create);
 

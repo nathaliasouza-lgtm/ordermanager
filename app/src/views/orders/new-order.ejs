@@ -1,142 +1,240 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Order Manager | New Order </title>
-  <!-- O caminho busca direto a partir do interior da pasta public/ -->
-  <link rel="stylesheet" href="../css/orders/form-style.css">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Manager | New Order</title>
+
+    <link rel="stylesheet" href="../css/orders/form-style.css">
 </head>
+
 <body>
     <h1>Order Manager</h1>
     <div class="form-container">
         <h2>New Order Form</h2>
         <form action="/order" method="POST" class="form-card">
-    <div class="form-group">
-        <label for="order_number">Order Number</label>
-        <input type="text" id="order_number" name="order_number" required placeholder="Ex: CSTMR-001">
-    </div>
-    <div class="form-group">
-        <label for="customer">Customer</label>
-        <div class="search-group">
-            <input type="search" id="customer" name="customer" required>
-            <input type="hidden" name="customer_token" id="token_input">
-            <button  type="button" id="btn-search" class="btn-search">
-                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><style>.cls-1{fill:#2d3e50;}</style></defs><title>search customer</title><path class="cls-1" d="M120.5891,106.37506,96.5609,80.39355l-3.842,3.8457-4.35187-4.35187c.33368-.43195.667-.864.98346-1.30475A46.77661,46.77661,0,1,0,77.87956,89.85687q.99472-.68619,1.955-1.42987l4.34509,4.345-4.31427,4.31409,26.5097,23.5246a10.0585,10.0585,0,1,0,14.21405-14.23566ZM74.21977,74.22931a32.4793,32.4793,0,1,1,9.48859-22.94189A32.48241,32.48241,0,0,1,74.21977,74.22931Z"></path>
-                </svg>
-            </button>
-    </div>
-    </div>
-    <!-- Modal de Busca de Clientes -->
-    <div id="modal-customers" class="modal" tabindex="-1" style="display: none;">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Select Customer</h5>
-                    <button type="button" class="close-modal" aria-label="Close">&times;</button>
-                </div>
-                
-                <div class="modal-body">
-                    <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                        <th>Name</th>
-                        <th>CPF</th>
-                        <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customer-list">
-                        <!-- As linhas serão inseridas via JavaScript -->
-                    </tbody>
-                    </table>
-                </div>
-
-                <div class="modal-footer d-flex justify-content-between">
-                    <button id="prev-page" class="btn btn-sm btn-secondary" disabled>Previous</button>
-                    <span id="page-info">Page 1</span>
-                    <button id="next-page" class="btn btn-sm btn-secondary">Next</button>
+            
+            <!-- ORDER NUMBER -->
+            <div class="form-group">
+                <label for="order_number">Order Number</label>
+                <input type="text" id="order_number" name="order_number" required placeholder="Ex: CSTMR-001">
+            </div>
+            
+            <!-- CUSTOMER -->
+            <div class="form-group">
+                <label for="customer">Customer</label>
+                <div class="search-group">
+                    <button type="button" id="customer_btn-search" class="btn-search" aria-label="Open customer list">
+                        <svg d="arrow_dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="#2d3e50" d="M7.38 21.01c.49.49 1.28.49 1.77 0l8.31-8.31a1 1 0 0 0 0-1.41L9.15 2.98a1.25 1.25 0 0 0-1.77 1.77L14.62 12l-7.25 7.25a1.25 1.25 0 0 0 .01 1.76Z" />
+                        </svg>
+                    </button>
+                    <input type="text" id="customer" name="customer" placeholder="Search customer..." required >
+                    <input type="hidden" name="customer_token" id="token_input">
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label for="payment_date">Payment Date</label>
-        <input type="datetime-local" id="payment_date" name="payment_date" required>
-    </div>
+            <!-- CUSTOMER MODAL -->
+            <div id="modal-customers" class="modal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center t-header"> Name </th>
+                                        <th class="text-center t-header"> CPF
+                                        </th>
+                                        <th class="text-center t-header"> Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customer-list"></tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button id="prev-page" type="button" class="btn-secondary" disabled > 
+                                Previous
+                            </button>
+                            <span id="page-info">Page 1</span>
+                            <button id="next-page" type="button" class="btn-secondary">
+                                Next
+                            </button>
+                        </div>
+                    </div>
 
-    <div class="form-group">
-        <label for="handling_deadline">Handling Deadline</label>
-        <input type="datetime-local" id="handling_deadline" name="handling_deadline" required>
-    </div>
+                </div>
 
-    <div class="form-group">
-        <label for="delivery_deadline">Delivery Deadline</label>
-        <input type="datetime-local" id="delivery_deadline" name="delivery_deadline">
-    </div>
+            </div>
 
-    <div class="form-group">
-        <label for="discount_percentage">Discount (%)</label>
-        <input type="text" id="discount_percentage" name="discount_percentage">
-    </div>
+            <!-- PAYMENT DATE -->
+            <div class="form-group">
+                <label for="payment_date">Payment Date</label>
+                <input type="datetime-local" id="payment_date" name="payment_date" required >
+            </div>
 
+            <!-- HANDLING DEADLINE -->
+            <div class="form-group">
+                <label for="handling_deadline">Handling Deadline</label>
+                <input type="datetime-local" id="handling_deadline" name="handling_deadline" readonly required >
+            </div>
 
-    <div class="form-group">
-        <label for="discount_value">Discount Value</label>
-        <input type="text" id="discount_value" name="discount_value">
-    </div>
+            <!-- DELIVERY DEADLINE -->
+            <div class="form-group">
+                <label for="delivery_deadline">Delivery Deadline</label>
+                <input type="datetime-local" id="delivery_deadline" name="delivery_deadline" >
+            </div>
 
-    <div class="form-group">
-        <label for="shipping_fee">Shipping Fee</label>
-        <input type="text" id="shipping_fee" name="shipping_fee">
-    </div>
+            <!-- PRODUCTS -->
+            <div class="form-group">
+                <label>Products</label>
+                <button type="button" id="btn-add-products" class="btn-primary" >
+                    Add/Edit Products
+                </button>
+                <input type="text" id="product" value="No products selected" readonly aria-label="Selected products" >
+            </div>
 
-    <div class="form-group">
-        <h3>Payment Method</h3>
-        <div class="payment-option">
-            <input type="radio" id="credit_card" name="payment_method" value="Credit Card">
-            <label for="credit_card">Credit Card</label>
-        </div>
-        <div class="payment-option">
-            <input type="radio" id="debit_card" name="payment_method" value="Debit Card">
-            <label for="debit_card">Debit Card</label>
-        </div>
-        <div class="payment-option">
-            <input type="radio" id="bank_transfer" name="payment_method" value="Bank Transfer">
-            <label for="bank_transfer">Bank Transfer</label>
-        </div>
-    </div>
+            <!-- SELECTED PRODUCTS TABLE -->
+            <div class="form-group" id="selected-products-container">
+                <label>Selected Products</label>
+                <div class="table-responsive">
+                    <table class="table product-summary-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Amount</th>
+                                <th>Unit Price</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="selected-product-list">
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    No products selected.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="product-hidden-fields"></div>
 
-    <div class="form-group">
-        <label for="status">Status</label>
-        <select name="status" id="status">
-            <option value="new">NEW</option>
-            <option value="cancelled">CANCELLED</option>
-            <option value="shipping">SHIPPING</option>
-            <option value="handling">HANDLING</option>    
-            <option value="delivered">DELIVERED</option>    
-            <option value="payment_pending">PAYMENT PENDING</option>    
-            <option value="refunded">REFUNDED</option>    
-            <option value="returned">RETURNED</option>    
-            <option value="expired">EXPIRED</option>            
-            <option value="failed">FAILED</option>    
-        </select>
-    </div>
-    <div class="form-group">
-        <!-- INPUT DE BUSCA DE PRODUTOS -->
+            <!-- PRODUCT MODAL -->
+            <div id="modal-products" class="product-modal">
+                <div class="product-modal-content">
+                    <div class="product-modal-header">
+                        <h3>Select Products</h3>
+                        <button type="button" id="close-product-modal" class="close-modal" aria-label="Close" >
+                            &times;
+                        </button>
+                    </div>
+                    <div class="product-modal-body">
+                        <div class="form-group product-search-group">
+                            <label for="product-search">Search products</label>
+                            <input type="search" id="product-search" placeholder="Search by SKU or description..." >
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table product-selection-table">
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Description</th>
+                                        <th>Unit Price</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-list">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="product-modal-footer">
+                        <button type="button" id="prev-product-page" class="btn-secondary" disabled >
+                            Previous
+                        </button>
+                        <span id="product-page-info">Page 1</span>
+                        <button type="button" id="next-product-page" class="btn-secondary" >
+                            Next
+                        </button>
+                    </div>
+                    <div class="product-modal-actions">
+                        <button type="button" id="save-products" class="btn-primary" >
+                            Save Products
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- TABELA COM OS PRODUTOS ADICIONADOS -->
-    </div>
-    <div class="form-group">
-        <label for="payment_value">Total</label>
-        <input type="text" id="payment_value" name="payment_value">
-    </div>
-    <div class="form-actions">
-        <button type="submit" class="btn-primary">Add Order</button>
-        <a href="/order" class="btn-secondary">Voltar</a>
-    </div>
-    </form>
-    </div>
+            <!-- DISCOUNTS -->
+            <div class="form-group">
+                <label for="discount_percentage">Discount (%)</label>
+                <input type="text" id="discount_percentage" name="discount_percentage" >
+            </div>
 
-  <script src="/../js/orders/form.js"></script>
+            <div class="form-group">
+                <label for="discount_value">Discount Value</label>
+                <input type="text" id="discount_value" name="discount_value" >
+            </div>
+
+            <!-- SHIPPING -->
+            <div class="form-group">
+                <label for="shipping_fee">Shipping Fee</label>
+                <input type="text" id="shipping_fee" name="shipping_fee">
+            </div>
+
+            <!-- PAYMENT METHOD -->
+            <div class="form-group">
+                <h3>Payment Method</h3>
+                <div class="payment-option">
+                    <input type="radio" id="credit_card" name="payment_method" value="Credit Card" >
+                    <label for="credit_card">Credit Card</label>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="debit_card" name="payment_method" value="Debit Card" >
+                    <label for="debit_card">Debit Card</label>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="bank_transfer" name="payment_method" value="Bank Transfer" >
+                    <label for="bank_transfer">Bank Transfer</label>
+                </div>
+            </div>
+
+            <!-- STATUS -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select name="status" id="status">
+                    <option value="new">NEW</option>
+                    <option value="cancelled">CANCELLED</option>
+                    <option value="shipping">SHIPPING</option>
+                    <option value="handling">HANDLING</option>
+                    <option value="delivered">DELIVERED</option>
+                    <option value="payment_pending">PAYMENT PENDING</option>
+                    <option value="refunded">REFUNDED</option>
+                    <option value="returned">RETURNED</option>
+                    <option value="expired">EXPIRED</option>
+                    <option value="failed">FAILED</option>
+                </select>
+            </div>
+
+            <!-- TOTAL -->
+            <div class="form-group">
+                <label for="payment_value">Total</label>
+                <input type="text" id="payment_value" name="payment_value" >
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    Add Order
+                </button>
+                <a href="/order" class="btn-secondary">
+                    Voltar
+                </a>
+            </div>
+        </form>
+    </div>
+    <script src="../js/orders/form.js" defer></script>
 </body>
 </html>

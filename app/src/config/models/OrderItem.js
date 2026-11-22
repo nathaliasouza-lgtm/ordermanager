@@ -5,7 +5,7 @@ class OrderItem extends Model {
 
     static associate(models) {
         this.belongsTo(models.Order, {
-            foreignKey: 'order_id', // Mesmo nome da coluna
+            foreignKey: 'order_id',
             as: 'orders'
         });
 

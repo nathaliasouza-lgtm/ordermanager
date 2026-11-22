@@ -80,8 +80,6 @@ if (arrowButton && customerModal) {
   });
 }
 
-
-
 if (customerInput) {
   customerInput.addEventListener('input', () => {
     if (tokenInput) {
@@ -587,7 +585,7 @@ function changeProductAmount(id, product, difference) {
 
   selectedProducts.set(id, {
     sku: product.sku,
-    name: product.description,
+    description: product.description,
     unitPrice: product.price,
     amount: newAmount
   });

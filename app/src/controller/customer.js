@@ -60,11 +60,6 @@ exports.create = async (req, res) => {
 
             return res.redirect('/customer');
 
-            /*return res.status(201).json({
-                message: 'Customer is successfully created!',
-                customer: createCustomer.id,
-                created_at: createCustomer.created_at
-            });*/
         }else{
            return res.status(400).json({error: 'Oops! This customer is already created!'});
         }

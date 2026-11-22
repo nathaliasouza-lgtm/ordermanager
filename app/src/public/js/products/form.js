@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activation_date.disabled = true;
       }
       if (!checkPrice(price)) {
-        event.preventDefault(); // Impede o envio do formulário se for inválido
+        event.preventDefault(); 
       }
 
 

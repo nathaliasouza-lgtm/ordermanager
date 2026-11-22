@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Lista de Clientes</title>
-  <!-- O caminho busca direto a partir do interior da pasta public/ -->
   <link rel="stylesheet" href="../css/form-style.css">
 </head>
 <body>
 <div class="form-container">
     <form action="/customer" method="POST" class="form-card">
   <div class="form-group">
-    <label for="name">Nome completo</label>
+    <label for="name">Name</label>
     <input type="text" id="name" name="name" required placeholder="Ex: Maria Silva">
   </div>
 
@@ -25,7 +24,7 @@
   </div>
 
   <div class="form-group">
-    <label for="phone">Telefone</label>
+    <label for="phone">Phone</label>
     <input type="text" id="phone" name="phone" placeholder="(11) 99999-9999">
   </div>
 
@@ -36,27 +35,27 @@
   </div>
 
   <div class="form-group">
-    <label for="address">Endereço</label>
+    <label for="address">Adress</label>
     <input type="text" id="address" name="address">
   </div>
 
   <div class="form-group">
-    <label for="residence_number">Número</label>
+    <label for="residence_number">Number</label>
     <input type="text" id="residence_number" name="residence_number">
   </div>
 
   <div class="form-group">
-    <label for="neighborhood">Bairro</label>
+    <label for="neighborhood">Neighborhood</label>
     <input type="text" id="neighborhood" name="neighborhood">
   </div>
 
   <div class="form-group">
-    <label for="city">Cidade</label>
+    <label for="city">City</label>
     <input type="text" id="city" name="city">
   </div>
 
   <div class="form-group">
-    <label for="state">Estado</label>
+    <label for="state">State</label>
     <input type="text" id="state" name="state">
   </div>
 
@@ -66,8 +65,8 @@
   </div>
 
   <div class="form-actions">
-    <button type="submit" class="btn-primary">Salvar Cliente</button>
-    <a href="/customer" class="btn-secondary">Voltar</a>
+    <button type="submit" class="btn-primary">Save</button>
+    <a href="/customer" class="btn-secondary">Back</a>
   </div>
 
 </form>

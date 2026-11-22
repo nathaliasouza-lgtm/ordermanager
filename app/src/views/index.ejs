@@ -24,7 +24,7 @@
           const formatBRL = (val) =>
             Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         %>
-
+        <!-- Revenue Section -->
         <section class="section-revenue">
           <h2>Revenue</h2>
 
@@ -216,12 +216,16 @@
                 <label for="modal-status-select" class="field-label">Order Status</label>
                 <div class="status-actions">
                   <select id="modal-status-select">
-                    <!-- Adjust options to match your exact database status values -->
-                    <option value="New">New</option>
-                    <option value="Processing">Processing</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                    <option value="Cancelled">Cancelled</option>
+                    <option value="NEW">New</option>
+                    <option value="PAYMENT PENDING">Payment Pending</option>
+                    <option value="SHIPPING">Shipping</option>
+                    <option value="DELIVERED">Delivered</option>
+                    <option value="CANCELLED">Cancelled</option>
+                    <option value="HANDLING">Handling</option>
+                    <option value="REFUNDED">Refunded</option>
+                    <option value="RETURNED">Returned</option>
+                    <option value="EXPIRED">Expired</option>
+                    <option value="FAILED">Failed</option>
                   </select>
                   <button type="button" id="save-status-btn" class="btn-save-status">Save Status</button>
                 </div>

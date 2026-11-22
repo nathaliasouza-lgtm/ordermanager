@@ -10,6 +10,7 @@ Aplicação web desenvolvida em **Node.js** para gerenciamento, cadastro e visua
 - **Sequelize**: ORM para manipulação e mapeamento do MySQL
 - **MySQL2**: Driver de conexão para o banco de dados MySQL
 - **dotenv**: Gerenciamento de variáveis de ambiente
+- **jsonwebtoken**: Geração e validação de tokens JWT
 
 ## 📋 Pré-requisitos
 
@@ -60,6 +61,7 @@ PORT=3000
 USER=seu_usuario_mysql
 PASSWORD=sua_senha_mysql
 DATABASE=order_manager
+SECRET_KEY=sua_chave_secreta_segura
 ```
 
 > **Nota:** Certifique-se de que o banco de dados especificado em `DATABASE` já esteja criado no seu servidor MySQL antes de rodar a aplicação.
@@ -85,13 +87,20 @@ http://localhost:3000/customer
 
 | Método | Rota | Descrição |
 |---|---|---|
-| `GET` | `/customer` | Renderiza a tabela com a listagem de clientes. |
-| `GET` | `/customer/new` | Exibe o formulário para cadastro de um novo cliente. |
-| `POST` | `/customer` | Processa a criação e validação do cliente no banco de dados. |
-| `GET` | `/product` | Renderiza a tabela com a listagem de produtos. |
-| `GET` | `/product/new` | Exibe o formulário para cadastro de um novo produto. |
-| `POST` | `/product` | Processa a criação e validação do produto no banco de dados. |
-| `GET` | `/order` | Renderiza a tabela com a listagem de pedidos. |
-| `GET` | `/order/new` | Exibe o formulário para cadastro de um novo pedido. |
-| `GET` | `/order/new/customers` | Lista clientes para seleção no formulário de cadastro do pedido. |
-| `POST` | `/order` | Processa a criação e validação do pedido no banco de dados. |
+| `GET` | `/` | Exibe o dashboard com totais, status dos pedidos e estatísticas. |
+| `GET` | `/customer` | Lista clientes. |
+| `GET` | `/customer/new` | Exibe o formulário de cadastro de cliente. |
+| `POST` | `/customer` | Cria um cliente. |
+| `GET` | `/customer/:id` | Busca um cliente pelo ID. |
+| `PATCH` | `/customer/:id` | Atualiza os dados de um cliente. |
+| `GET` | `/product` | Lista produtos. |
+| `GET` | `/product/new` | Exibe o formulário de cadastro de produto. |
+| `POST` | `/product` | Cria um produto. |
+| `PATCH` | `/product/:sku` | Atualiza um produto pelo SKU. |
+| `GET` | `/order` | Lista pedidos. |
+| `GET` | `/order/new` | Exibe o formulário de cadastro de pedido. |
+| `GET` | `/order/new/customers` | Lista clientes para seleção no formulário de pedido. |
+| `GET` | `/order/new/products` | Lista produtos para seleção no formulário de pedido. |
+| `POST` | `/order` | Cria um pedido. |
+| `GET` | `/orders/:id/details` | Retorna os detalhes de um pedido. |
+| `PATCH` | `/orders/:id/status` | Atualiza o status do pedido e ajusta o estoque quando necessário. |

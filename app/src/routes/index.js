@@ -193,7 +193,7 @@ router.patch('/orders/:id/status', express.json(), async (req, res) => {
       include: [
         {
           model: OrderItem,
-          as: 'items' // Match your Order -> OrderItem association alias
+          as: 'items'
         }
       ],
       transaction: t

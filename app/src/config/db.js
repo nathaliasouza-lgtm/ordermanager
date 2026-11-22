@@ -18,8 +18,8 @@ const sequelize = new Sequelize(database, user, password, {
 
     //Removes date formatting
     dialectOptions:{
-        dateStrings: true, //mantém a data com o formato string
-        typeCast: true //remove a formatação
+        dateStrings: true, 
+        typeCast: true
     },
     logging: false
 

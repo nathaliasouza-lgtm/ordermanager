@@ -27,8 +27,8 @@ async function syncOrderInventory(items, previousStatus, newStatus, transaction)
   const wasDeducted = DEDUCT_STATUSES.includes(prev);
   const shouldDeduct = DEDUCT_STATUSES.includes(next);
   const shouldRestore = RESTORE_STATUSES.includes(next);
-
-  let direction = 0; // -1 = decrease storage_amt, +1 = increase storage_amt
+  // -1 = decrease storage_amt, +1 = increase storage_amt
+  let direction = 0; 
 
   if (!wasDeducted && shouldDeduct) {
     direction = -1;

@@ -5,108 +5,7 @@
   <title>Lista de Produtos</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/nav.css">
-  <style>
-    .inline-input {
-      width: 95px;
-      padding: 4px 6px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .actions-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-action {
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-    .btn-edit {
-      background-color: #4b5563;
-      color: #fff;
-    }
-    .btn-save {
-      background-color: #2563eb;
-      color: #fff;
-    }
-    .btn-cancel {
-      background-color: #e5e7eb;
-      color: #111827;
-    }
-    .btn-save:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-    .status-badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-    .status-active {
-      background-color: #dcfce7;
-      color: #166534;
-    }
-    .status-inactive {
-      background-color: #fee2e2;
-      color: #991b1b;
-    }
-    .deactivate-option {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      user-select: none;
-    }
-    .row-inactive {
-      opacity: 0.7;
-    }
-    .pagination-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 16px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .pagination-info {
-      font-size: 0.9rem;
-      color: #4b5563;
-    }
-    .pagination-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .page-link {
-      padding: 6px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      text-decoration: none;
-      color: #111827;
-      background-color: #fff;
-      font-size: 0.875rem;
-    }
-    .page-link:hover:not(.disabled):not(.active) {
-      background-color: #f3f4f6;
-    }
-    .page-link.active {
-      background-color: #2563eb;
-      color: #fff;
-      border-color: #2563eb;
-      font-weight: 600;
-    }
-    .page-link.disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
-  </style>
+  <link rel="stylesheet" href="../css/products.css">
 </head>
 <body>
   <nav>
@@ -123,13 +22,13 @@
   </div>
 
   <div class="header-container">
-    <h2>Produtos Cadastrados</h2>
+    <h2>Products</h2>
     <a href="/product/new" class="btn-primary">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="5" x2="12" y2="19"></line>
         <line x1="5" y1="12" x2="19" y2="12"></line>
       </svg>
-      Adicionar produto
+      New Product
     </a>
   </div>
 
@@ -139,14 +38,7 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input 
-        type="text" 
-        id="input-busca" 
-        name="search"
-        value="<%= typeof search !== 'undefined' ? search : '' %>"
-        placeholder="Buscar produtos por sku, descrição..."
-        autocomplete="off"
-      >
+      <input type="text" id="input-busca" name="search"value="<%= typeof search !== 'undefined' ? search : '' %>"placeholder="Search products by description, sku..."autocomplete="off">
     </form>
   </div>
 
@@ -154,19 +46,19 @@
     <thead>
       <tr>
         <th>SKU</th>
-        <th>Descrição</th>
-        <th>Preço Unitário</th>
-        <th>Quantidade em Estoque</th>
-        <th>Produto ativo</th>
-        <th>Data de Ativação</th>
-        <th>Data de Inativação</th>
-        <th>Ações</th>
+        <th>Description</th>
+        <th>Unit Price</th>
+        <th>Stock Quantity</th>
+        <th>Product Active</th>
+        <th>Activation Date</th>
+        <th>Deactivation Date</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody id="tbody-data">
       <% if (products.length === 0) { %>
         <tr>
-          <td colspan="8" style="text-align: center; padding: 16px;">Nenhum produto encontrado.</td>
+          <td colspan="8" style="text-align: center; padding: 16px;">Oops! No products found.</td>
         </tr>
       <% } %>
       <% products.forEach(product => { %>
@@ -183,14 +75,14 @@
           <td class="cell-amount"><%= product.storage_amt %></td>
           <td class="cell-status">
             <span class="status-badge <%= product.activated ? 'status-active' : 'status-inactive' %>">
-              <%= product.activated ? 'Ativo' : 'Inativo' %>
+              <%= product.activated ? 'Active' : 'Inactive' %>
             </span>
           </td>
           <td class="cell-activation-date"><%= product.activation_date || '-' %></td>
           <td class="cell-deactivated-at"><%= product.deactivated_at || '-' %></td>
           <td class="cell-actions">
             <div class="actions-wrapper">
-              <button type="button" class="btn-action btn-edit">Editar</button>
+              <button type="button" class="btn-action btn-edit">Edit</button>
             </div>
           </td>
         </tr>
@@ -203,8 +95,8 @@
   %>
   <div class="pagination-container">
     <div class="pagination-info">
-      Página <strong><%= currentPage %></strong> de <strong><%= totalPages %></strong> 
-      (<%= totalItems %> produto<%= totalItems === 1 ? '' : 's' %>)
+      Page <strong><%= currentPage %></strong> of <strong><%= totalPages %></strong> 
+      (<%= totalItems %> product<%= totalItems === 1 ? '' : 's' %>)
     </div>
 
     <div class="pagination-controls">
@@ -212,7 +104,7 @@
         href="/product?<%= queryPrefix %>page=<%= currentPage - 1 %>" 
         class="page-link <%= currentPage <= 1 ? 'disabled' : '' %>"
       >
-        Anterior
+        Previous
       </a>
 
       <% for (let i = 1; i <= totalPages; i++) { %>
@@ -228,119 +120,12 @@
         href="/product?<%= queryPrefix %>page=<%= currentPage + 1 %>" 
         class="page-link <%= currentPage >= totalPages ? 'disabled' : '' %>"
       >
-        Próxima
+        Next
       </a>
     </div>
   </div>
 
   <script src="/../js/main.js"></script>
-  <script>
-    function renderReadOnlyRow(row) {
-      const price = row.dataset.price;
-      const amount = row.dataset.amount;
-      const isActive = row.dataset.activated === 'true';
-
-      row.classList.toggle('row-inactive', !isActive);
-      row.querySelector('.cell-price').textContent = price;
-      row.querySelector('.cell-amount').textContent = amount;
-      row.querySelector('.cell-status').innerHTML = `
-        <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
-          ${isActive ? 'Ativo' : 'Inativo'}
-        </span>
-      `;
-      row.querySelector('.cell-actions').innerHTML = `
-        <div class="actions-wrapper">
-          <button type="button" class="btn-action btn-edit">Editar</button>
-        </div>
-      `;
-    }
-
-    function enterEditMode(row) {
-      const currentPrice = row.dataset.price;
-      const currentAmount = row.dataset.amount;
-      const isActive = row.dataset.activated === 'true';
-
-      row.querySelector('.cell-price').innerHTML = `
-        <input type="number" step="0.01" min="0" class="inline-input input-price" value="${currentPrice}">
-      `;
-      row.querySelector('.cell-amount').innerHTML = `
-        <input type="number" step="1" min="0" class="inline-input input-amount" value="${currentAmount}">
-      `;
-
-      const toggleLabel = isActive ? 'Inativar produto' : 'Reativar produto';
-      row.querySelector('.cell-actions').innerHTML = `
-        <div class="actions-wrapper">
-          <label class="deactivate-option">
-            <input type="checkbox" class="checkbox-toggle-status">
-            ${toggleLabel}
-          </label>
-          <button type="button" class="btn-action btn-save">Salvar</button>
-          <button type="button" class="btn-action btn-cancel">Cancelar</button>
-        </div>
-      `;
-    }
-
-    document.getElementById('tbody-data').addEventListener('click', async (event) => {
-      const target = event.target;
-      const row = target.closest('tr');
-      if (!row) return;
-
-      if (target.classList.contains('btn-edit')) {
-        enterEditMode(row);
-        return;
-      }
-
-      if (target.classList.contains('btn-cancel')) {
-        renderReadOnlyRow(row);
-        return;
-      }
-
-      if (target.classList.contains('btn-save')) {
-        const sku = row.dataset.sku;
-        const price = row.querySelector('.input-price').value;
-        const storage_amt = row.querySelector('.input-amount').value;
-        const wasActive = row.dataset.activated === 'true';
-        const toggleChecked = row.querySelector('.checkbox-toggle-status').checked;
-        const nextActivated = toggleChecked ? !wasActive : wasActive;
-
-        target.disabled = true;
-        target.textContent = 'Salvando...';
-
-        try {
-          const response = await fetch(`/product/${encodeURIComponent(sku)}`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-              price,
-              storage_amt,
-              activated: nextActivated
-            })
-          });
-
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.error || 'Erro ao atualizar produto.');
-          }
-
-          row.dataset.price = data.product.price;
-          row.dataset.amount = data.product.storage_amt;
-          row.dataset.activated = String(data.product.activated);
-
-          row.querySelector('.cell-activation-date').textContent = data.product.activation_date || '-';
-          row.querySelector('.cell-deactivated-at').textContent = data.product.deactivated_at || '-';
-
-          renderReadOnlyRow(row);
-        } catch (err) {
-          alert(err.message);
-          target.textContent = 'Salvar';
-          target.disabled = false;
-        }
-      }
-    });
-  </script>
+  <script src="/../js/products/products.js"></script>
 </body>
 </html>

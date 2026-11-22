@@ -6,8 +6,8 @@ class Order extends Model{
     static associate(models){
       
         this.hasMany(models.OrderItem, {
-            foreignKey: 'order_id', // Nome da coluna que fica lá na tabela order_items
-            as: 'items'             // Apelido que você vai usar no include
+            foreignKey: 'order_id',
+            as: 'items'            
         });
         this.belongsTo(models.Customer, {
             foreignKey: 'customer_id',

@@ -6,7 +6,6 @@ class Customer extends Model{
     async isValid(cpf) {
         var validCPF = false;
         return await validCPF;
-        
     }
 
     // creates a relationship one-to-many with Orders.

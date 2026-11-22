@@ -10,7 +10,7 @@
 body {
   background-color: #f8fafc;
   color: #1e293b;
-  padding: 0px 0px;
+  padding: 0px 0px 24px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,7 +129,7 @@ body {
 
 /* Estilização da Tabela */
 .t-registros {
-  width: 70%;
+  width: 90%;
   border-collapse: collapse; /* Garante que os cantos e linhas se unam perfeitamente */
   text-align: left;
   font-size: 0.95rem;

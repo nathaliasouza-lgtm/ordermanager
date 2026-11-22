@@ -8,5 +8,7 @@ router.get('/new', async (req, res) => {
 });
 
 router.post('/', customer.create);
+router.get('/:id', customer.getById);
+router.patch('/:id', customer.update);
 
 module.exports = router;

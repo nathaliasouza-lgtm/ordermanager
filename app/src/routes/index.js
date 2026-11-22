@@ -10,21 +10,25 @@ router.get('/', async (req, res) => {
       totalCustomers,
       totalProductsSum,
       activeProductsCount,
+      inactiveProductsCount,
       storageStats,
       rawOrders,
       upcomingOrders,
       topProducts,
-      repeatCustomersList
+      repeatCustomersList,
+      revenueStats,
+      pendingRevenueSum
     ] = await Promise.all([
       Customer.count(),
       Product.sum('storage_amt'),
       Product.count({ where: { activated: true } }),
+      Product.count({ where: { activated: false } }),
       Product.findOne({
-            attributes: [
-              [fn('SUM', literal('storage_amt * price')), 'totalStorageValue'],
-              [fn('AVG', col('price')), 'averageCost']
-            ],
-            raw: true
+        attributes: [
+          [fn('SUM', literal('storage_amt * price')), 'totalStorageValue'],
+          [fn('AVG', col('price')), 'averageCost']
+        ],
+        raw: true
       }),
       Order.findAll({
         attributes: [
@@ -68,20 +72,42 @@ router.get('/', async (req, res) => {
         limit: 5
       }),
       Order.findAll({
-          attributes: [
-              'customer_id',
-              [fn('COUNT', col('id')), 'orderCount']
-          ],
-            where: {
-              [Op.and]: [
-                { customer_id: { [Op.ne]: null } },
-                literal("UPPER(status) NOT IN ('cancelled', 'refunded', 'failed', 'expired')")
-              ]
-            },
-            group: ['customer_id'],
-            having: literal('COUNT(id) > 1'),
-            raw: true
-        })
+        attributes: [
+          'customer_id',
+          [fn('COUNT', col('id')), 'orderCount']
+        ],
+        where: {
+          customer_id: { [Op.ne]: null },
+          [Op.or]: [
+            { status: null },
+            literal("LOWER(status) NOT IN ('cancelled', 'refunded', 'failed', 'expired')")
+          ]
+        },
+        group: ['customer_id'],
+        having: literal('COUNT(*) > 1'),
+        raw: true
+      }),
+      // Revenue & Order Financial Totals (excluding cancelled/refunded/failed/expired)
+      Order.findOne({
+        attributes: [
+          [fn('SUM', col('payment_value')), 'totalRevenue'],
+          [fn('AVG', col('payment_value')), 'averageOrderValue'],
+          [fn('SUM', col('shipping_fee')), 'totalShipping'],
+          [fn('SUM', col('discount_value')), 'totalDiscounts'],
+          [fn('COUNT', col('id')), 'validOrdersCount']
+        ],
+        where: {
+          [Op.or]: [
+            { status: null },
+            literal("LOWER(status) NOT IN ('cancelled', 'refunded', 'failed', 'expired')")
+          ]
+        },
+        raw: true
+      }),
+      // Pending Payment Revenue
+      Order.sum('payment_value', {
+        where: literal("LOWER(status) = 'payment pending'")
+      })
     ]);
 
     const ordersByStatus = {};
@@ -93,14 +119,21 @@ router.get('/', async (req, res) => {
       totalCustomers,
       totalProductsInStorage: totalProductsSum || 0,
       activeProducts: activeProductsCount || 0,
+      inactiveProducts: inactiveProductsCount || 0,
       totalStorageValue: Number(storageStats?.totalStorageValue || 0),
       averageStorageCost: Number(storageStats?.averageCost || 0),
       ordersByStatus,
       upcomingOrders,
       topProducts,
-      repeatCustomersCount: repeatCustomersList.length
+      repeatCustomersCount: repeatCustomersList.length,
+      totalRevenue: Number(revenueStats?.totalRevenue || 0),
+      averageOrderValue: Number(revenueStats?.averageOrderValue || 0),
+      totalShipping: Number(revenueStats?.totalShipping || 0),
+      totalDiscounts: Number(revenueStats?.totalDiscounts || 0),
+      validOrdersCount: Number(revenueStats?.validOrdersCount || 0),
+      pendingRevenue: Number(pendingRevenueSum || 0)
     });
-    console.log('Repeat customers query result:', repeatCustomersList)
+
   } catch (error) {
     console.error('Error loading dashboard:', error);
     res.status(500).send(`Server Error: ${error.message}`);

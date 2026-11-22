@@ -20,6 +20,38 @@
 
   <div class="dashboard-layout">
     <main>
+        <%
+          const formatBRL = (val) =>
+            Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        %>
+
+        <section class="section-revenue">
+          <h2>Revenue</h2>
+
+          <div>
+            <h3>Total Revenue</h3>
+            <p><%= formatBRL(totalRevenue) %></p>
+            <small><%= validOrdersCount %> order<%= validOrdersCount === 1 ? '' : 's' %> valid<%= validOrdersCount === 1 ? '' : 's' %></small>
+          </div>
+
+          <div>
+            <h3>Average Ticket</h3>
+            <p><%= formatBRL(averageOrderValue) %></p>
+            <small>Average per order</small>
+          </div>
+
+          <div>
+            <h3>Pending Payment</h3>
+            <p><%= formatBRL(pendingRevenue) %></p>
+            <small>Awaiting confirmation</small>
+          </div>
+
+          <div>
+            <h3>Total in Transit</h3>
+            <p><%= formatBRL(totalShipping) %></p>
+            <small>Discounts: <%= formatBRL(totalDiscounts) %></small>
+          </div>
+        </section>
         <!-- Orders Section -->
       <section class="section-orders">
         <h2>Orders by Status</h2>
@@ -45,32 +77,33 @@
 
       <!-- Products Section -->
       <section class="section-products">
-        <h2>Products</h2>
-        <div>
-          <h3>Active Products</h3>
-          <p><%= typeof activeProducts !== 'undefined' ? activeProducts : 0 %></p>
-        </div>
-        <div>
-          <h3>Products in Storage</h3>
-          <p><%= typeof totalProductsInStorage !== 'undefined' ? totalProductsInStorage : 0 %></p>
-        </div>
-        <div>
-          <h3>Total Storage Value</h3>
-          <p>
-            <%= (typeof totalStorageValue !== 'undefined' ? totalStorageValue : 0)
-                  .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>
-          </p>
-        </div>
-        <div>
-          <h3>Average Cost</h3>
-          <p>
-            <%= (typeof averageStorageCost !== 'undefined' ? averageStorageCost : 0)
-                  .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) %>
-          </p>
-        </div>
-      </section>
+          <h2>Products</h2>
 
-      
+          <div>
+            <h3>Active Products</h3>
+            <p><%= activeProducts %></p>
+          </div>
+
+          <div style="border-top: 4px solid #b91010;">
+            <h3 >Inactive Products</h3>
+            <p><%= inactiveProducts %></p>
+          </div>
+
+          <div>
+            <h3>Total in Storage</h3>
+            <p><%= totalProductsInStorage %></p>
+          </div>
+
+          <div>
+            <h3>Total Storage Value</h3>
+            <p><%= formatBRL(totalStorageValue) %></p>
+          </div>
+
+          <div>
+            <h3>Average Cost</h3>
+            <p><%= formatBRL(averageStorageCost) %></p>
+          </div>
+       </section>
     </main>
 
     <!-- Right Sidebar Column -->

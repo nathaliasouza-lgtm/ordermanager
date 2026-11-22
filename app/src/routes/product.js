@@ -7,5 +7,6 @@ router.get('/new', async (req, res) => {
   return res.render('products/new-product');
 });
 router.post('/', product.create);
+router.patch('/:sku', product.update);
 
 module.exports = router;

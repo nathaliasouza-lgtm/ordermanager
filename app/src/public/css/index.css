@@ -35,6 +35,21 @@ main {
   padding: 0;
 }
 
+.section-revenue > div {
+  border-top: 4px solid #f59e0b; /* Amber/Gold */
+}
+
+.section-revenue > div p {
+  font-size: 1.85rem;
+}
+
+.section-revenue > div small {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
 /* Sidebar: Upcoming Deliveries */
 .upcoming-orders {
   background-color: #ffffff;

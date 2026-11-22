@@ -14,7 +14,10 @@ const JWT_SECRET = process.env.SECRET_KEY;
 // LIST ORDERS
 exports.list = async (req, res) => {
     try {
-        const { search } = req.query;
+        const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+        const limit = Math.max(1, parseInt(req.query.limit, 10) || 10);
+        const offset = (page - 1) * limit;
+        const search = (req.query.search || '').trim();
         const whereClause = {};
 
         if (search) {
@@ -23,11 +26,23 @@ exports.list = async (req, res) => {
             ];
         }
 
-        const order = await Order.findAll({
-            where: whereClause
+        const { count, rows } = await Order.findAndCountAll({
+            where: whereClause,
+            limit,
+            offset,
+            order: [['id', 'DESC']]
         });
 
-        return res.render('orders/order', { order });
+        const totalPages = Math.max(1, Math.ceil(count / limit));
+
+        return res.render('orders/order', {
+            order: rows,
+            currentPage: page,
+            totalPages,
+            totalItems: count,
+            limit,
+            search
+        });
 
     } catch (err) {
         return res.status(500).json({ error: err.message });
